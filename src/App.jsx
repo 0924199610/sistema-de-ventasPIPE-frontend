@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -17,14 +17,31 @@ function cambiaridentificacion(evento) {
 setidentificacion(evento.target.value)
 }
 
-function buscar() {
-if (cliente == 'jose' && identificacion == '1116'){
-alert('encontrado')
-setLogueado(true)
-}else{
-  alert('cliente o identificacion incorrectos')
+async function buscar() {
+  if (cliente == 'jose' && identificacion == '1116'){
+    alert('encontrado')
+    setLogueado(true)
+    }else{
+      alert('cliente o identificacion incorrectos')
+    }
+ const petticion = await fetch ('http://localhost:3000/clientes?nombre='+nombre+'&apellido='+apellido+'&telefono='+telefono+'&numerofactura='+numerofactura+'&idproducto='+idproducto, {credentiasls:'include'})
+if (petticion.ok){
+  setLogueado(true)
+} else{
+  alert ('cliente o identificacion incorrectos')
 }
 }
+
+async function validar(){
+  const petticion = await fetch ('http://localhost:3000/validar', {credentiasls:'include'})
+  if (petticion.ok){
+    setLogueado(true)
+  } 
+}
+
+useEffect(()=>{
+  validar()
+},[])
 
 if (logueado){
  return <Conversor/>
